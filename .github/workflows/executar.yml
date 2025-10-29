@@ -1,0 +1,27 @@
+name: Executar script Python automaticamente
+
+# ⏰ Agendamento
+on:
+  schedule:
+    - cron: "15 13 * * *"   # todos os dias às 12h UTC (09h no horário de Brasília)
+  workflow_dispatch:        # permite rodar manualmente também
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fazer checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependências
+        run: |
+          pip install -r requirements.txt || echo "Sem dependências para instalar"
+
+      - name: Executar script
+        run: python main.py
